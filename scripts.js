@@ -7,10 +7,20 @@ async function converterValores() {
     const valorConverter = document.querySelector('.valor-converter')
     const valorConvertido = document.querySelector('.valor-convertido')
 
-    const date = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL').then(response => response.json())
+    const dateReal = await fetch('https://economia.awesomeapi.com.br/last/BRL-USD,BRL-EUR').then(response => response.json())
 
-    const dolarToday = date.USDBRL.high
-    const euroToday = date.EURBRL.high
+    const dateDolar = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,USD-EUR').then(response => response.json())
+
+    const dateEuro = await fetch('https://economia.awesomeapi.com.br/last/EUR-BRL,EUR-USD').then(response => response.json())
+
+    const realDolar = dateReal.BRLUSD.high
+    const realEuro = dateReal.BRLEUR.high
+    
+    const dolarReal = dateDolar.USDBRL.high
+    const dolarEuro = dateDolar.USDEUR.high
+
+    const euroReal = dateEuro.EURBRL.high
+    const euroDolar = dateEuro.EURUSD.high
 
     if(converterDe.value == 'real-de') {
         valorConverter.innerHTML = new Intl.NumberFormat('pt-BR', {
@@ -45,14 +55,14 @@ async function converterValores() {
         valorConvertido.innerHTML = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
-        }).format(valorConversao / dolarToday)
+        }).format(valorConversao / realDolar)
     }
 
     if(converterPara.value == 'euro-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('de-DE', {
             style: 'currency',
             currency: 'EUR'
-        }).format(valorConversao / euroToday)
+        }).format(valorConversao / realEuro)
     }
 
     // TRANSFORMANDO DÓLAR em OUTRAS MOEDAS
@@ -67,14 +77,14 @@ async function converterValores() {
         valorConvertido.innerHTML = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-        }).format(valorConversao * dolarToday)
+        }).format(valorConversao * dolarReal)
     }
 
     if(converterDe.value == 'dolar-de' && converterPara.value == 'euro-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('de-DE', {
             style: 'currency',
             currency: 'EUR'
-        }).format(valorConversao * euroToday)
+        }).format(valorConversao * dolarEuro)
     }
 
     // TRANSFORMANDO EURO em OUTRAS MOEDAS
@@ -89,14 +99,14 @@ async function converterValores() {
         valorConvertido.innerHTML = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-        }).format(valorConversao * euroToday)
+        }).format(valorConversao * euroReal)
     }
 
     if(converterDe.value == 'euro-de' && converterPara.value == 'dolar-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
-        }).format(valorConversao * dolarToday)
+        }).format(valorConversao * euroDolar)
     }
 }
 
