@@ -2,13 +2,15 @@ const botaoConverter = document.querySelector('.botao-converter')
 const converterDe = document.querySelector('.converter-de')
 const converterPara = document.querySelector('.converter-para')
 
-function converterValores() {
+async function converterValores() {
     const valorConversao = document.querySelector('.valor-conversao').value
     const valorConverter = document.querySelector('.valor-converter')
     const valorConvertido = document.querySelector('.valor-convertido')
 
-    const dolarToday = 4.8921
-    const euroToday = 5.351
+    const date = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL').then(response => response.json())
+
+    const dolarToday = date.USDBRL.high
+    const euroToday = date.EURBRL.high
 
     if(converterDe.value == 'real-de') {
         valorConverter.innerHTML = new Intl.NumberFormat('pt-BR', {
@@ -72,7 +74,7 @@ function converterValores() {
         valorConvertido.innerHTML = new Intl.NumberFormat('de-DE', {
             style: 'currency',
             currency: 'EUR'
-        }).format(valorConversao * 0.9139)
+        }).format(valorConversao * euroToday)
     }
 
     // TRANSFORMANDO EURO em OUTRAS MOEDAS
@@ -94,7 +96,7 @@ function converterValores() {
         valorConvertido.innerHTML = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
-        }).format(valorConversao * 1.0938)
+        }).format(valorConversao * dolarToday)
     }
 }
 
