@@ -7,20 +7,20 @@ async function converterValores() {
     const valorConverter = document.querySelector('.valor-converter')
     const valorConvertido = document.querySelector('.valor-convertido')
 
-    const dateReal = await fetch('https://economia.awesomeapi.com.br/last/BRL-USD,BRL-EUR').then(response => response.json())
+    const dateReal = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL').then(response => response.json())
 
-    const dateDolar = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,USD-EUR').then(response => response.json())
+    const dateDolar = await fetch('https://economia.awesomeapi.com.br/last/BRL-USD,EUR-USD').then(response => response.json())
 
-    const dateEuro = await fetch('https://economia.awesomeapi.com.br/last/EUR-BRL,EUR-USD').then(response => response.json())
+    const dateEuro = await fetch('https://economia.awesomeapi.com.br/last/BRL-EUR,USD-EUR').then(response => response.json())
 
-    const realDolar = dateReal.BRLUSD.high
-    const realEuro = dateReal.BRLEUR.high
+    const realDolar = dateReal.USDBRL.high
+    const realEuro = dateReal.EURBRL.high
     
-    const dolarReal = dateDolar.USDBRL.high
-    const dolarEuro = dateDolar.USDEUR.high
+    const dolarReal = dateDolar.BRLUSD.high
+    const dolarEuro = dateDolar.EURUSD.high
 
-    const euroReal = dateEuro.EURBRL.high
-    const euroDolar = dateEuro.EURUSD.high
+    const euroReal = dateEuro.BRLEUR.high
+    const euroDolar = dateEuro.USDEUR.high
 
     if(converterDe.value == 'real-de') {
         valorConverter.innerHTML = new Intl.NumberFormat('pt-BR', {
@@ -43,7 +43,7 @@ async function converterValores() {
         }).format(valorConversao)
     }
 
-    // TRANSFORMANDO REAL em OUTRAS MOEDAS
+    // CONVERTENDO REAL em OUTRAS MOEDAS
     if(converterPara.value == 'real-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
@@ -65,7 +65,7 @@ async function converterValores() {
         }).format(valorConversao / realEuro)
     }
 
-    // TRANSFORMANDO DÓLAR em OUTRAS MOEDAS
+    // CONVERTENDO DÓLAR em OUTRAS MOEDAS
     if(converterDe.value == 'dolar-de' && converterPara.value == 'dolar-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -77,17 +77,17 @@ async function converterValores() {
         valorConvertido.innerHTML = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-        }).format(valorConversao * dolarReal)
+        }).format(valorConversao / dolarReal)
     }
 
     if(converterDe.value == 'dolar-de' && converterPara.value == 'euro-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('de-DE', {
             style: 'currency',
             currency: 'EUR'
-        }).format(valorConversao * dolarEuro)
+        }).format(valorConversao / dolarEuro)
     }
 
-    // TRANSFORMANDO EURO em OUTRAS MOEDAS
+    // CONVERTENDO EURO em OUTRAS MOEDAS
     if(converterDe.value == 'euro-de' && converterPara.value == 'euro-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('de-DE', {
             style: 'currency',
@@ -99,14 +99,14 @@ async function converterValores() {
         valorConvertido.innerHTML = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-        }).format(valorConversao * euroReal)
+        }).format(valorConversao / euroReal)
     }
 
     if(converterDe.value == 'euro-de' && converterPara.value == 'dolar-para') {
         valorConvertido.innerHTML = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
-        }).format(valorConversao * euroDolar)
+        }).format(valorConversao / euroDolar)
     }
 }
 
